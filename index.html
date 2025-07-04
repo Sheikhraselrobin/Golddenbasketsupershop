@@ -1,654 +1,443 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golden Basket Super Shop</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #8B4513; /* Leather brown */
-            --secondary-color: #A0522D;
-            --light-color: #F5DEB3;
-            --dark-color: #3A2D1D;
-            --text-light: #FFFFFF;
-            --text-dark: #333333;
-            --bg-light: #FFF8DC;
-            --bg-dark: #2A2118;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        body.dark-mode {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-        }
-
-        header {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            padding: 1rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .logo {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto;
-            display: block;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .header-content h1 {
-            font-size: 2rem;
-            margin: 0.5rem 0;
-        }
-
-        .header-content p {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .search-container {
-            margin: 1rem auto;
-            max-width: 600px;
-        }
-
-        .search-container input {
-            width: 80%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 25px 0 0 25px;
-            font-size: 1rem;
-        }
-
-        .search-container button {
-            width: 20%;
-            padding: 0.8rem;
-            border: none;
-            background-color: var(--secondary-color);
-            color: white;
-            border-radius: 0 25px 25px 0;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .menu-toggle {
-            position: absolute;
-            left: 1rem;
-            top: 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .sidebar {
-            position: fixed;
-            left: -300px;
-            top: 0;
-            width: 300px;
-            height: 100vh;
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            z-index: 1000;
-            transition: left 0.3s ease-in-out;
-            padding-top: 4rem;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .sidebar.open {
-            left: 0;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 1rem;
-        }
-
-        .sidebar li {
-            margin: 1.5rem 0;
-            padding: 0.8rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s;
-        }
-
-        .sidebar li:hover {
-            background-color: var(--secondary-color);
-            transform: translateX(10px);
-        }
-
-        .sidebar li a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 1.2rem;
-            display: block;
-        }
-
-        .mode-toggle {
-            position: absolute;
-            right: 4rem;
-            top: 1.5rem;
-            cursor: pointer;
-            font-size: 1.5rem;
-        }
-
-        .language-toggle {
-            position: absolute;
-            right: 1rem;
-            top: 1.5rem;
-            cursor: pointer;
-            font-size: 1.5rem;
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 0.3rem 0.6rem;
-            border-radius: 5px;
-        }
-
-        .page-content {
-            padding: 2rem;
-            min-height: 60vh;
-        }
-
-        .delivery-info {
-            text-align: center;
-            padding: 1rem;
-            background-color: var(--light-color);
-            color: var(--text-dark);
-            margin-top: 2rem;
-        }
-
-        body.dark-mode .delivery-info {
-            background-color: var(--dark-color);
-            color: var(--text-light);
-        }
-
-        footer {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .contact-info i {
-            font-size: 1.5rem;
-        }
-
-        /* Flash Sales Page Styles */
-        .flash-sales {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .discount-card {
-            background-color: var(--light-color);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        body.dark-mode .discount-card {
-            background-color: var(--dark-color);
-        }
-
-        .discount-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .discount-card p {
-            font-size: 1.2rem;
-        }
-
-        /* Popular Categories Page Styles */
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .category-card {
-            background-color: var(--light-color);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        body.dark-mode .category-card {
-            background-color: var(--dark-color);
-        }
-
-        .category-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .category-card i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        /* Deal of the Day Page Styles */
-        .deals {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .deal-card {
-            background-color: var(--light-color);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        body.dark-mode .deal-card {
-            background-color: var(--dark-color);
-        }
-
-        .deal-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        }
-
-        .deal-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .deal-card p {
-            font-size: 1.1rem;
-        }
-
-        /* Hidden pages */
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .back-button {
-            display: inline-block;
-            margin-bottom: 1rem;
-            padding: 0.5rem 1rem;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .back-button:hover {
-            background-color: var(--secondary-color);
-        }
-    </style>
+    <title>Golden Basket Super Shop - Premium Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" type="image/png">
 </head>
-<body>
+<body class="light">
+    <!-- Header & Theme/Language Switch -->
     <header>
-        <div class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
+        <div class="top-bar">
+            <button class="menu-btn" id="menuBtn" aria-label="Open menu">&#9776;</button>
+            <!-- NO LOGO -->
+            <div class="site-title">
+                <h1 id="title">Golden Basket Super Shop</h1>
+                <span class="premium-badge">PREMIUM</span>
+            </div>
+            <div class="switch-group">
+                <button id="themeSwitch" title="Toggle light/dark mode">🌞</button>
+                <select id="langSwitch">
+                    <option value="bn">বাংলা</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
         </div>
-        <div class="mode-toggle" id="modeToggle">
-            <i class="fas fa-moon"></i>
-        </div>
-        <div class="language-toggle" id="languageToggle">
-            English
-        </div>
-        <img src="https://live.staticflickr.com/65535/54632188009_3db1a9baab_b.jpg" alt="Golden Basket Logo" class="logo">
         <div class="header-content">
-            <h1 id="mainTitle">Golden Basket Super Shop</h1>
-            <p id="subTitle">Grocery Delivered at your Doorstep</p>
-        </div>
-        <div class="search-container">
-            <input type="text" placeholder="Search for products..." id="searchInput">
-            <button id="searchButton"><i class="fas fa-search"></i></button>
+            <h2 id="subtitle">Grocery Delivered at your Doorstep</h2>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for products, brands or categories...">
+                <button id="searchBtn">🔍</button>
+            </div>
+            <div class="header-offer">
+                <span>🎉 নতুন ইউজারদের জন্য ১০% ছাড়! | ফ্রি হোম ডেলিভারি! | রেফার করে জিতে নিন পয়েন্টস!</span>
+            </div>
         </div>
     </header>
 
-    <div class="sidebar" id="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="sidebar" id="sidebar">
+        <button class="close-btn" id="closeSidebar" aria-label="Close menu">&times;</button>
         <ul>
-            <li id="homeLink"><a href="#"><i class="fas fa-home"></i> Home</a></li>
-            <li id="flashSalesLink"><a href="#"><i class="fas fa-bolt"></i> Flash Sales</a></li>
-            <li id="popularCategoriesLink"><a href="#"><i class="fas fa-list"></i> Popular Categories</a></li>
-            <li id="dealOfDayLink"><a href="#"><i class="fas fa-calendar-day"></i> Deal of the Day</a></li>
+            <li><a href="#" class="menu-link" data-page="home"><span class="menu-ico">🏠</span> <span class="menu-text">Home</span></a></li>
+            <li><a href="#" class="menu-link" data-page="flash-sales"><span class="menu-ico">⚡</span> <span class="menu-text">Flash Sales</span></a></li>
+            <li><a href="#" class="menu-link" data-page="popular-categories"><span class="menu-ico">🌟</span> <span class="menu-text">Popular Categories</span></a></li>
+            <li><a href="#" class="menu-link" data-page="deal-day"><span class="menu-ico">🎁</span> <span class="menu-text">Deal of the Day</span></a></li>
+            <li><a href="#" class="menu-link" data-page="featured-products"><span class="menu-ico">🔥</span> <span class="menu-text">Featured</span></a></li>
+            <li><a href="#" class="menu-link" data-page="brands"><span class="menu-ico">🏷️</span> <span class="menu-text">Brands</span></a></li>
+            <li><a href="#" class="menu-link" data-page="membership"><span class="menu-ico">👑</span> <span class="menu-text">Membership</span></a></li>
+            <li><a href="#" class="menu-link" data-page="my-account"><span class="menu-ico">👤</span> <span class="menu-text">My Account</span></a></li>
+            <li><a href="#" class="menu-link" data-page="wishlist"><span class="menu-ico">💖</span> <span class="menu-text">Wishlist</span></a></li>
+            <li><a href="#" class="menu-link" data-page="cart"><span class="menu-ico">🛒</span> <span class="menu-text">Cart</span></a></li>
+            <li><a href="#" class="menu-link" data-page="order-tracking"><span class="menu-ico">🚚</span> <span class="menu-text">Order Tracking</span></a></li>
+            <li><a href="#" class="menu-link" data-page="offers"><span class="menu-ico">🎟️</span> <span class="menu-text">Offers</span></a></li>
+            <li><a href="#" class="menu-link" data-page="about-us"><span class="menu-ico">ℹ️</span> <span class="menu-text">About Us</span></a></li>
+            <li><a href="#" class="menu-link" data-page="contact"><span class="menu-ico">📞</span> <span class="menu-text">Contact</span></a></li>
+            <li><a href="#" class="menu-link" data-page="faq"><span class="menu-ico">❓</span> <span class="menu-text">FAQ</span></a></li>
+            <li><a href="#" class="menu-link" data-page="blog"><span class="menu-ico">📰</span> <span class="menu-text">Blog</span></a></li>
         </ul>
-    </div>
+    </nav>
 
-    <div class="page-content">
-        <!-- Home Page -->
-        <div class="page active" id="homePage">
-            <h2>Welcome to Golden Basket Super Shop</h2>
-            <p>Your one-stop solution for all grocery needs. Browse our categories or check out our special offers!</p>
-            
-            <div class="categories" style="margin-top: 2rem;">
-                <div class="category-card" onclick="showPage('flashSalesPage')">
-                    <i class="fas fa-bolt"></i>
-                    <h3>Flash Sales</h3>
-                    <p>Limited time offers with huge discounts</p>
-                </div>
-                <div class="category-card" onclick="showPage('popularCategoriesPage')">
-                    <i class="fas fa-list"></i>
-                    <h3>Popular Categories</h3>
-                    <p>Browse our wide range of products</p>
-                </div>
-                <div class="category-card" onclick="showPage('dealOfDayPage')">
-                    <i class="fas fa-calendar-day"></i>
-                    <h3>Deal of the Day</h3>
-                    <p>Special offers available today only</p>
+    <!-- Overlay for sidebar -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content Pages -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="page active">
+            <div class="banner">
+                <h2>Welcome to Golden Basket Super Shop</h2>
+                <p>Your trusted online grocery partner for everyday essentials and premium products.</p>
+                <div class="banner-features">
+                    <div>
+                        <span>🚚</span><br>
+                        <b>2 Hours Delivery</b>
+                        <p>Fastest delivery in Pabna Sadar</p>
+                    </div>
+                    <div>
+                        <span>🛡️</span><br>
+                        <b>100% Genuine</b>
+                        <p>Authentic & Fresh products</p>
+                    </div>
+                    <div>
+                        <span>💳</span><br>
+                        <b>Multiple Payment</b>
+                        <p>Cash, Card, Mobile Banking</p>
+                    </div>
+                    <div>
+                        <span>🎁</span><br>
+                        <b>Loyalty Points</b>
+                        <p>Earn points on every order</p>
+                    </div>
+                    <div>
+                        <span>🎉</span><br>
+                        <b>Exclusive Offers</b>
+                        <p>Daily flash deals & coupons</p>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="home-grid">
+                <div class="home-feature">
+                    <h3>🆕 New Arrivals</h3>
+                    <ul>
+                        <li>Organic Mangoes - 1kg</li>
+                        <li>Premium Olive Oil 500ml</li>
+                        <li>Imported Chocolates Box</li>
+                    </ul>
+                </div>
+                <div class="home-feature">
+                    <h3>🏆 Best Sellers</h3>
+                    <ul>
+                        <li>Miniket Rice 5kg</li>
+                        <li>Fresh Chicken (Whole) 1kg</li>
+                        <li>Parachute Coconut Oil</li>
+                    </ul>
+                </div>
+                <div class="home-feature">
+                    <h3>🎯 Why Shop With Us?</h3>
+                    <ul>
+                        <li>Easy Returns & Refunds</li>
+                        <li>24/7 Customer Support</li>
+                        <li>Order Scheduling</li>
+                        <li>Gift Cards & Vouchers</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-        <!-- Flash Sales Page -->
-        <div class="page" id="flashSalesPage">
-            <a href="#" class="back-button" onclick="showPage('homePage')"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        <section id="flash-sales" class="page">
             <h2>Flash Sales</h2>
-            <p>Hurry up! These offers won't last long.</p>
-            
-            <div class="flash-sales">
-                <div class="discount-card">
-                    <h3>20% OFF</h3>
-                    <p>On all fresh fruits and vegetables</p>
-                    <p>Use code: FRUIT20</p>
-                </div>
-                <div class="discount-card">
-                    <h3>5% OFF</h3>
-                    <p>On all dairy products</p>
-                    <p>Use code: DAIRY5</p>
-                </div>
-                <div class="discount-card">
-                    <h3>30% OFF</h3>
-                    <p>On cleaning supplies</p>
-                    <p>Use code: CLEAN30</p>
-                </div>
-                <div class="discount-card">
-                    <h3>15% OFF</h3>
-                    <p>On all beverages</p>
-                    <p>Use code: DRINK15</p>
-                </div>
-                <div class="discount-card">
-                    <h3>25% OFF</h3>
-                    <p>On baby care products</p>
-                    <p>Use code: BABY25</p>
-                </div>
-                <div class="discount-card">
-                    <h3>10% OFF</h3>
-                    <p>On all frozen foods</p>
-                    <p>Use code: FROZEN10</p>
-                </div>
+            <div class="sales-list">
+                <div class="sale-box">২০% ছাড়! <br><small>On Fruits</small></div>
+                <div class="sale-box">৫% ছাড়! <br><small>All Beverages</small></div>
+                <div class="sale-box">৩০% ছাড়! <br><small>On Meat & Fish</small></div>
+                <div class="sale-box">১৫% ছাড়! <br><small>Home Cleaning</small></div>
+                <div class="sale-box">১০% ছাড়! <br><small>Stationery</small></div>
             </div>
-        </div>
+            <p class="notice">⏰ Hurry! Offers valid for next <b>2 hours</b> only.</p>
+        </section>
 
-        <!-- Popular Categories Page -->
-        <div class="page" id="popularCategoriesPage">
-            <a href="#" class="back-button" onclick="showPage('homePage')"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        <section id="popular-categories" class="page">
             <h2>Popular Categories</h2>
-            <p>Browse our wide range of products</p>
-            
-            <div class="categories">
-                <div class="category-card">
-                    <i class="fas fa-apple-alt"></i>
-                    <h3>Fruits & Vegetables</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-drumstick-bite"></i>
-                    <h3>Meat & Fish</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-wine-bottle"></i>
-                    <h3>Beverages</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-broom"></i>
-                    <h3>Home & Cleaning</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-bug"></i>
-                    <h3>Pest Control</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-pencil-alt"></i>
-                    <h3>Stationery & Office</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-spa"></i>
-                    <h3>Beauty Products</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-heartbeat"></i>
-                    <h3>Health Products</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-paw"></i>
-                    <h3>Pet Care</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-blender"></i>
-                    <h3>Kitchen Appliances</h3>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-baby"></i>
-                    <h3>Baby Care</h3>
-                </div>
+            <div class="cat-list">
+                <div class="cat-box">Fruits & Vegetables</div>
+                <div class="cat-box">Meat & Fish</div>
+                <div class="cat-box">Dairy & Eggs</div>
+                <div class="cat-box">Beverages</div>
+                <div class="cat-box">Home & Cleaning</div>
+                <div class="cat-box">Pest Control</div>
+                <div class="cat-box">Stationery & Office</div>
+                <div class="cat-box">Beauty Products</div>
+                <div class="cat-box">Health Products</div>
+                <div class="cat-box">Pet Care</div>
+                <div class="cat-box">Kitchen Appliances</div>
+                <div class="cat-box">Baby Care</div>
+                <div class="cat-box">Snacks & Biscuits</div>
+                <div class="cat-box">Rice, Oil & Spices</div>
+                <div class="cat-box">Bakery & Dairy</div>
             </div>
-        </div>
+        </section>
 
-        <!-- Deal of the Day Page -->
-        <div class="page" id="dealOfDayPage">
-            <a href="#" class="back-button" onclick="showPage('homePage')"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        <section id="deal-day" class="page">
             <h2>Deal of the Day</h2>
-            <p>Special offers available today only</p>
-            
-            <div class="deals">
-                <div class="deal-card">
-                    <h3>Golden Hour</h3>
-                    <p>6:00 PM - 8:00 PM</p>
-                    <p>Extra 15% discount on all items</p>
+            <div class="deal-list">
+                <div class="deal-box">🥇 গোল্ডেন আওয়ার <br><span>Buy 2 get 1 free on Apples</span></div>
+                <div class="deal-box">😊 হ্যাপি আওয়ার <br><span>Milk 1L only ৳60</span></div>
+                <div class="deal-box">🌅 মর্নিং বাজার <br><span>Flat ৳50 OFF on Breakfast items</span></div>
+                <div class="deal-box">📦 সাপ্তাহিক অফার <br><span>Combo Pack: Rice+Oil+Dal</span></div>
+                <div class="deal-box">🗓️ মাসিক অফার <br><span>Save 10% on Monthly Essentials</span></div>
+            </div>
+        </section>
+
+        <section id="featured-products" class="page">
+            <h2>Featured Products</h2>
+            <div class="featured-grid">
+                <div class="featured-item">
+                    <img src="https://i.ibb.co/KxH1d4n/fruit.jpg" alt="Fresh Fruits">
+                    <h4>Fresh Fruits Pack</h4>
+                    <p>৳ 250 <del>৳ 300</del></p>
+                    <button>Add to Cart</button>
                 </div>
-                <div class="deal-card">
-                    <h3>Happy Hour</h3>
-                    <p>12:00 PM - 2:00 PM</p>
-                    <p>Buy 1 get 1 free on snacks</p>
+                <div class="featured-item">
+                    <img src="https://i.ibb.co/v4k2bg3/chicken.jpg" alt="Chicken">
+                    <h4>Farm Chicken (1kg)</h4>
+                    <p>৳ 280 <del>৳ 320</del></p>
+                    <button>Add to Cart</button>
                 </div>
-                <div class="deal-card">
-                    <h3>Morning Bazaar</h3>
-                    <p>7:00 AM - 10:00 AM</p>
-                    <p>Fresh produce at lowest prices</p>
+                <div class="featured-item">
+                    <img src="https://i.ibb.co/5hQjZp1/ghee.jpg" alt="Ghee">
+                    <h4>Premium Ghee 500g</h4>
+                    <p>৳ 420 <del>৳ 500</del></p>
+                    <button>Add to Cart</button>
                 </div>
-                <div class="deal-card">
-                    <h3>Weekly Offer</h3>
-                    <p>Every Friday</p>
-                    <p>10% discount on all grocery</p>
-                </div>
-                <div class="deal-card">
-                    <h3>Monthly Offer</h3>
-                    <p>First week of month</p>
-                    <p>Special bundle deals</p>
-                </div>
-                <div class="deal-card">
-                    <h3>Weekend Special</h3>
-                    <p>Saturday & Sunday</p>
-                    <p>Family packs at discounted rates</p>
+                <div class="featured-item">
+                    <img src="https://i.ibb.co/6WJ2wJ0/biscuit.jpg" alt="Biscuit">
+                    <h4>Butter Cookies Box</h4>
+                    <p>৳ 180</p>
+                    <button>Add to Cart</button>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section id="brands" class="page">
+            <h2>Top Brands</h2>
+            <div class="brands-bar">
+                <span>ACI</span>
+                <span>Parachute</span>
+                <span>Square</span>
+                <span>Fresh</span>
+                <span>Igloo</span>
+                <span>Pran</span>
+                <span>Nestle</span>
+                <span>Unilever</span>
+                <span>Radhuni</span>
+                <span>Sunflower Oil</span>
+            </div>
+            <p>We ensure all your favorite and trusted brands are always in stock!</p>
+        </section>
+
+        <section id="membership" class="page">
+            <h2>Premium Membership</h2>
+            <div class="membership-cards">
+                <div class="member-card gold">
+                    <h3>Gold</h3>
+                    <ul>
+                        <li>Free Delivery</li>
+                        <li>Priority Support</li>
+                        <li>Exclusive Coupons</li>
+                        <li>Birthday Gifts</li>
+                    </ul>
+                    <button>Upgrade - ৳499/year</button>
+                </div>
+                <div class="member-card silver">
+                    <h3>Silver</h3>
+                    <ul>
+                        <li>2 Free Deliveries/month</li>
+                        <li>Early Access to Sales</li>
+                        <li>Special Discounts</li>
+                    </ul>
+                    <button>Upgrade - ৳249/year</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="my-account" class="page">
+            <h2>My Account</h2>
+            <div class="account-info">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User Avatar" class="avatar">
+                <p><strong>Name:</strong> Md. Robin Rasel</p>
+                <p><strong>Email:</strong> robin@example.com</p>
+                <button class="account-btn">Edit Profile</button>
+                <button class="account-btn">Change Password</button>
+                <button class="account-btn">Logout</button>
+            </div>
+            <div class="account-orders">
+                <h4>Recent Orders</h4>
+                <ul>
+                    <li>Order #10245 - Delivered - ৳1230</li>
+                    <li>Order #10233 - Delivered - ৳850</li>
+                    <li>Order #10221 - Cancelled</li>
+                </ul>
+            </div>
+            <div class="account-points">
+                <h4>Loyalty Points: <span>340</span></h4>
+                <p>Redeem points for discounts!</p>
+            </div>
+        </section>
+
+        <section id="wishlist" class="page">
+            <h2>Wishlist</h2>
+            <ul class="wishlist-list">
+                <li>🍎 Apple (1 kg) <button class="wishlist-btn">Add to Cart</button></li>
+                <li>🥛 Milk (2 L) <button class="wishlist-btn">Add to Cart</button></li>
+                <li>🍫 Chocolate <button class="wishlist-btn">Add to Cart</button></li>
+            </ul>
+        </section>
+
+        <section id="cart" class="page">
+            <h2>Shopping Cart</h2>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th><th>Quantity</th><th>Price</th><th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Rice 5kg</td><td>1</td><td>৳ 350</td><td><button class="remove-btn">❌</button></td>
+                    </tr>
+                    <tr>
+                        <td>Chicken 1kg</td><td>2</td><td>৳ 260</td><td><button class="remove-btn">❌</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="cart-summary">
+                <strong>Total: ৳ 870</strong>
+                <button class="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </section>
+
+        <section id="order-tracking" class="page">
+            <h2>Order Tracking</h2>
+            <input type="text" class="track-input" placeholder="Enter Order ID">
+            <button class="track-btn">Track</button>
+            <div class="order-status">
+                <p><strong>Status:</strong> Out for delivery 🚚</p>
+                <p><strong>Expected:</strong> Today by 6:00 PM</p>
+            </div>
+        </section>
+
+        <section id="offers" class="page">
+            <h2>Special Offers & Coupons</h2>
+            <div class="offers-bar">
+                <div class="coupon">
+                    <b>WELCOME10</b>
+                    <p>New user 10% OFF</p>
+                </div>
+                <div class="coupon">
+                    <b>FREESHIP</b>
+                    <p>Free Delivery on ৳500+</p>
+                </div>
+                <div class="coupon">
+                    <b>MONTHLY100</b>
+                    <p>৳100 OFF on Monthly Groceries</p>
+                </div>
+            </div>
+            <p>Copy coupon code and apply at checkout!</p>
+        </section>
+
+        <section id="about-us" class="page">
+            <h2>About Us</h2>
+            <p>Golden Basket Super Shop is a modern online grocery shop delivering fresh groceries at your doorstep. We offer a wide range of products, best deals, and super-fast delivery in Pabna Sadar.<br><br><b>Why Choose Us?</b></p>
+            <ul class="about-list">
+                <li>✅ 100% Genuine Products</li>
+                <li>✅ Fastest Delivery</li>
+                <li>✅ Easy Returns</li>
+                <li>✅ 24/7 Customer Support</li>
+                <li>✅ Best Price Guarantee</li>
+                <li>✅ Premium Membership</li>
+            </ul>
+            <h4>Our Team</h4>
+            <div class="team-bar">
+                <div>
+                    <img src="https://i.ibb.co/2S60pQ8/avatar1.png" alt="CEO">
+                    <p>Robin Rasel<br><small>CEO</small></p>
+                </div>
+                <div>
+                    <img src="https://i.ibb.co/6H4V5s4/avatar2.png" alt="Manager">
+                    <p>Shamima Akter<br><small>Manager</small></p>
+                </div>
+                <div>
+                    <img src="https://i.ibb.co/6v29m5w/avatar3.png" alt="Support">
+                    <p>Tanvir Hasan<br><small>Customer Support</small></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="page">
+            <h2>Contact Us</h2>
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <div class="contact-details">
+                <p><strong>Phone:</strong> 01322925662 / 01329664475</p>
+                <p><strong>Email:</strong> support@goldenbasket.com</p>
+                <p><strong>Address:</strong> College Road, Pabna Sadar, Bangladesh</p>
+                <p><strong>Customer Care:</strong> 24/7 Live Chat & Hotline</p>
+            </div>
+            <div class="social-bar">
+                <a href="#"><span>🌐</span> Website</a>
+                <a href="#"><span>📘</span> Facebook</a>
+                <a href="#"><span>📸</span> Instagram</a>
+            </div>
+        </section>
+
+        <section id="faq" class="page">
+            <h2>Frequently Asked Questions</h2>
+            <details>
+                <summary>How fast is delivery?</summary>
+                <p>We deliver within 2 hours inside Pabna Sadar.</p>
+            </details>
+            <details>
+                <summary>How do I return a product?</summary>
+                <p>Contact our support within 24 hours after delivery to initiate a return.</p>
+            </details>
+            <details>
+                <summary>How can I pay?</summary>
+                <p>We accept cash on delivery, mobile banking, and all major credit/debit cards.</p>
+            </details>
+            <details>
+                <summary>How to become a premium member?</summary>
+                <p>Go to Membership page and choose your plan.</p>
+            </details>
+        </section>
+
+        <section id="blog" class="page">
+            <h2>Latest Blogs</h2>
+            <div class="blog-list">
+                <div>
+                    <h4>5 Healthy Grocery Tips</h4>
+                    <p>Discover how to pick the healthiest groceries for your family.</p>
+                    <a href="#">Read More</a>
+                </div>
+                <div>
+                    <h4>Why Shop Online for Groceries?</h4>
+                    <p>Top reasons to switch to online grocery shopping in 2025!</p>
+                    <a href="#">Read More</a>
+                </div>
+                <div>
+                    <h4>Exclusive: Ramadan Essentials</h4>
+                    <p>Best deals on Ramadan essentials, only at Golden Basket.</p>
+                    <a href="#">Read More</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Location Bar -->
+    <div class="location-bar">
+        <span id="locationTxt">Currently Delivering in পাবনা সদর !</span>
     </div>
 
-    <div class="delivery-info">
-        <p id="deliveryText">Currently Delivering in পাবনা সদর!</p>
-    </div>
-
+    <!-- Footer -->
     <footer>
-        <img src="https://live.staticflickr.com/65535/54632188009_3db1a9baab_b.jpg" alt="Golden Basket Logo" class="logo" style="width: 50px; height: 50px;">
-        <h3>Golden Basket Super Shop</h3>
-        <div class="contact-info">
-            <i class="fas fa-phone"></i>
+        <div class="footer-contact">
+            <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png" alt="Phone" class="phone-icon">
             <span>01322925662 / 01329664475</span>
         </div>
-        <p>&copy; 2023 Golden Basket Super Shop. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Refund Policy</a>
+        </div>
+        <div class="footer-copy">
+            &copy; 2025 Golden Basket Super Shop. All rights reserved.
+        </div>
     </footer>
 
-    <script>
-        // DOM Elements
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const modeToggle = document.getElementById('modeToggle');
-        const languageToggle = document.getElementById('languageToggle');
-        const body = document.body;
-        const searchButton = document.getElementById('searchButton');
-        const searchInput = document.getElementById('searchInput');
-        
-        // Page elements
-        const homeLink = document.getElementById('homeLink');
-        const flashSalesLink = document.getElementById('flashSalesLink');
-        const popularCategoriesLink = document.getElementById('popularCategoriesLink');
-        const dealOfDayLink = document.getElementById('dealOfDayLink');
-        
-        // Text elements for language toggle
-        const mainTitle = document.getElementById('mainTitle');
-        const subTitle = document.getElementById('subTitle');
-        const deliveryText = document.getElementById('deliveryText');
-
-        // Menu Toggle
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
-
-        // Dark/Light Mode Toggle
-        modeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            
-            if (body.classList.contains('dark-mode')) {
-                modeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            } else {
-                modeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            }
-        });
-
-        // Language Toggle (English/Bangla)
-        let isEnglish = true;
-        languageToggle.addEventListener('click', () => {
-            isEnglish = !isEnglish;
-            
-            if (isEnglish) {
-                languageToggle.textContent = 'English';
-                mainTitle.textContent = 'Golden Basket Super Shop';
-                subTitle.textContent = 'Grocery Delivered at your Doorstep';
-                deliveryText.textContent = 'Currently Delivering in পাবনা সদর!';
-                
-                // Update menu items
-                homeLink.innerHTML = '<a href="#"><i class="fas fa-home"></i> Home</a>';
-                flashSalesLink.innerHTML = '<a href="#"><i class="fas fa-bolt"></i> Flash Sales</a>';
-                popularCategoriesLink.innerHTML = '<a href="#"><i class="fas fa-list"></i> Popular Categories</a>';
-                dealOfDayLink.innerHTML = '<a href="#"><i class="fas fa-calendar-day"></i> Deal of the Day</a>';
-            } else {
-                languageToggle.textContent = 'বাংলা';
-                mainTitle.textContent = 'গোল্ডেন ব্যাস্কেট সুপার শপ';
-                subTitle.textContent = 'আপনার দরজায়杂货 বিতরণ';
-                deliveryText.textContent = 'বর্তমানে পাবনা সদরে ডেলিভারি করা হচ্ছে!';
-                
-                // Update menu items
-                homeLink.innerHTML = '<a href="#"><i class="fas fa-home"></i> হোম</a>';
-                flashSalesLink.innerHTML = '<a href="#"><i class="fas fa-bolt"></i> ফ্ল্যাশ সেল</a>';
-                popularCategoriesLink.innerHTML = '<a href="#"><i class="fas fa-list"></i> জনপ্রিয় বিভাগ</a>';
-                dealOfDayLink.innerHTML = '<a href="#"><i class="fas fa-calendar-day"></i> দিনের ডিল</a>';
-            }
-        });
-
-        // Search Functionality
-        searchButton.addEventListener('click', () => {
-            if (searchInput.value.trim() !== '') {
-                alert(`Searching for: ${searchInput.value}`);
-                searchInput.value = '';
-            }
-        });
-
-        // Page Navigation
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show the selected page
-            document.getElementById(pageId).classList.add('active');
-            
-            // Close sidebar if open
-            sidebar.classList.remove('open');
-        }
-
-        // Menu item click handlers
-        homeLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('homePage');
-        });
-
-        flashSalesLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('flashSalesPage');
-        });
-
-        popularCategoriesLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('popularCategoriesPage');
-        });
-
-        dealOfDayLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showPage('dealOfDayPage');
-        });
-
-        // Allow Enter key to trigger search
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchButton.click();
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
